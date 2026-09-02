@@ -88,7 +88,7 @@ export default function WanderingAvatar() {
     >
       {/* Speech Bubble */}
       {speech && (
-        <div className="absolute bottom-full mb-2 bg-white dark:bg-slate-800 border-2 border-indigo-200 dark:border-indigo-900 text-[10px] px-3 py-1.5 rounded-xl rounded-br-none shadow-lg font-bold text-indigo-900 dark:text-indigo-100 whitespace-nowrap animate-bounce pointer-events-auto">
+        <div className="absolute bottom-full mb-2 bg-white dark:bg-slate-800 border-2 border-indigo-200 dark:border-indigo-900 text-[10px] px-3 py-1.5 rounded-xl rounded-br-none shadow-lg font-bold text-indigo-900 dark:text-[#F9F9F9] whitespace-nowrap animate-bounce pointer-events-auto">
           {speech}
         </div>
       )}

@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { StoreProvider } from "@/lib/store-provider";
 
+import Navigation from "@/components/Navigation";
+
 export const viewport: Viewport = {
   themeColor: "#4f46e5",
 };
@@ -30,10 +32,15 @@ export default function RootLayout({
       suppressHydrationWarning
       className="h-full antialiased font-sans"
     >
-      <body className="min-h-full flex flex-col">
+      <body className="h-full flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TooltipProvider>
-            <StoreProvider>{children}</StoreProvider>
+            <StoreProvider>
+              <Navigation />
+              <main className="flex-1 overflow-hidden flex flex-col">
+                {children}
+              </main>
+            </StoreProvider>
           </TooltipProvider>
         </ThemeProvider>
         <script

@@ -21,10 +21,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   - Focus: Data models, persistence, cloud synchronization.
   - Rule: Never change or remove existing fields on `Recipe`, `DinnerSlot`, `Ingredient`, or `Planner` without backward compatibility.
 
-## 2. Mandatory Verification & Health Check
+## 2. Mandatory Verification & Task Tracking
 - Before concluding any task, the agent MUST run:
-  - `npm run build` or `npx tsc --noEmit`
+  - `npm run check` (runs fast TypeScript check) and/or `npm run build`
 - Never leave a broken TypeScript type or build failure for the next agent.
+- **Update `ROADMAP.md`**: When completing a task or starting a milestone, update the checkboxes and add an entry under `Recent Activity Log` in `ROADMAP.md`.
 
 ## 3. Surgical Edits & Preservation
 - Do not overwrite or delete unrelated features when refactoring.

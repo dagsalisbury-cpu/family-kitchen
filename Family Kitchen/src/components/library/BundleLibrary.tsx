@@ -15,28 +15,28 @@ export default function BundleLibrary({
 
   return (
     <>
-      <div className="p-4 border-b border-white/40 dark:border-slate-800 flex justify-between items-center bg-amber-50/50 dark:bg-amber-900/10">
-        <h2 className="text-sm font-black text-amber-800 dark:text-amber-200 flex items-center gap-2 uppercase tracking-wider">
-          <PackageOpen className="w-4 h-4 text-amber-500" /> Item Bundles
+      <div className="p-4 border-b border-white/40 dark:border-slate-800 flex justify-between items-center bg-[#FFE45E]/30 dark:bg-[#FFE45E]/20">
+        <h2 className="text-sm font-black text-slate-800 dark:text-slate-100 flex items-center gap-2 uppercase tracking-wider">
+          <PackageOpen className="w-4 h-4 text-[#5AA9E6]" /> Item Bundles
         </h2>
-        <button onClick={() => openNewModal('bundle')} className="p-1 text-amber-600 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors">
+        <button onClick={() => openNewModal('bundle')} className="p-1 text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-[#FFE45E]/50 rounded-lg transition-colors">
           <Plus className="w-4 h-4 font-bold" />
         </button>
       </div>
-      <div className="p-4 space-y-2 max-h-[40%] overflow-y-auto bg-amber-50/20">
+      <div className="p-4 space-y-2 max-h-[40%] overflow-y-auto bg-transparent">
         {data?.bundles?.map((bundle) => (
           <DraggableItem
             key={bundle.id}
             id={`bundle-${bundle.id}`}
             type="bundle"
-            data={{ id: bundle.id }}
-            className="bg-white/90 dark:bg-slate-800 rounded-xl p-2.5 border-2 border-transparent hover:border-amber-300 shadow-sm cursor-grab active:cursor-grabbing group flex items-center gap-2"
+            data={{ id: bundle.id, name: bundle.name }}
+            className="bg-white/90 dark:bg-slate-800 rounded-xl p-2.5 border-2 border-transparent hover:border-[#FFE45E] shadow-sm cursor-grab active:cursor-grabbing group flex items-center gap-2"
           >
-            <div className="p-1 bg-amber-50 dark:bg-amber-900/50 rounded-lg group-hover:bg-amber-100 transition-colors">
-              <GripVertical className="w-3 h-3 text-amber-400" />
+            <div className="p-1 bg-[#FFE45E]/10 dark:bg-[#FFE45E]/20 rounded-lg group-hover:bg-slate-100 transition-colors">
+              <GripVertical className="w-3 h-3 text-slate-400" />
             </div>
             <div className="flex-1 truncate cursor-pointer" onClick={() => openEditModal(bundle.id, 'bundle')}>
-              <h3 className="font-bold text-slate-800 dark:text-slate-100 text-xs truncate hover:text-amber-600 transition-colors">{bundle.name}</h3>
+              <h3 className="font-bold text-slate-800 dark:text-slate-100 text-xs truncate hover:text-slate-700 dark:text-slate-200 transition-colors">{bundle.name}</h3>
             </div>
           </DraggableItem>
         ))}

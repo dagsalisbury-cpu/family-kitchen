@@ -1,6 +1,6 @@
-require('dotenv').config({ path: path.join(__dirname, '..', '.env.local') });
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '.env.local') });
 const { chromium } = require('playwright');
 const { createClient } = require('@supabase/supabase-js');
 

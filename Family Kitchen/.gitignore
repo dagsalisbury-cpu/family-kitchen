@@ -48,3 +48,5 @@ next-env.d.ts
 .sainsburys_queue.json
 .sainsburys_logs.txt
 .sainsburys_cancel.json
+.chrome-automation/
+scratch/

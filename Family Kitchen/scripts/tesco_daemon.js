@@ -2,15 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const { chromium } = require('playwright');
 
-const QUEUE_FILE = path.join(__dirname, '..', '.tesco_queue.json');
-const LOG_FILE = path.join(__dirname, '..', '.tesco_logs.txt');
+const QUEUE_FILE  = path.join(__dirname, '..', '.tesco_queue.json');
+const LOG_FILE    = path.join(__dirname, '..', '.tesco_logs.txt');
 const CANCEL_FILE = path.join(__dirname, '..', '.tesco_cancel.json');
 
 function log(msg) {
   const timestamp = new Date().toLocaleTimeString();
-  const line = `[${timestamp}] ${msg}\n`;
-  console.log(line.trim());
-  fs.appendFileSync(LOG_FILE, line);
+  fs.appendFileSync(LOG_FILE, `[${timestamp}] ${msg}\n`);
 }
 
 async function dismissCookieBanner(page) {
@@ -46,24 +44,20 @@ async function processJob(job) {
       headless: false,
       args: [
         '--disable-blink-features=AutomationControlled',
-        '--disable-features=IsolateOrigins,site-per-process,Crashpad',
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
+        '--disable-features=Crashpad'
       ],
       ignoreDefaultArgs: ['--enable-automation']
     };
 
     try {
-      browser = await chromium.launch({ 
-        ...launchOptions,
-        channel: 'chrome'
-      });
-    } catch (launchErr) {
-      log(`NOTICE: System Chrome unavailable (${(launchErr as any).message?.split('\n')[0]}). Trying Playwright Chromium...`);
       browser = await chromium.launch(launchOptions);
+    } catch (launchErr) {
+      log(`ERROR: Browser launch failed: ${launchErr.message}`);
+      throw launchErr;
     }
-    
     // Background watcher for instant user cancellation
     cancelInterval = setInterval(async () => {
       if (fs.existsSync(CANCEL_FILE)) {
@@ -511,12 +505,12 @@ async function processJob(job) {
       try { await browser.close(); } catch(e){}
       log('PROGRESS: Browser closed.');
     }
+    log('NOTICE: Robot stopped.');
   }
 }
 
 async function watchQueue() {
-  console.log(`Watching for Tesco jobs at ${QUEUE_FILE}...`);
-  fs.writeFileSync(LOG_FILE, '');
+  // Ensure queue file exists
   if (!fs.existsSync(QUEUE_FILE)) {
     fs.writeFileSync(QUEUE_FILE, '');
   }
@@ -525,21 +519,18 @@ async function watchQueue() {
 
   setInterval(async () => {
     if (processing) return;
-    
     try {
       const content = fs.readFileSync(QUEUE_FILE, 'utf-8');
       if (content.trim()) {
         processing = true;
         const job = JSON.parse(content);
-        fs.writeFileSync(QUEUE_FILE, '');
-        fs.writeFileSync(LOG_FILE, '');
-        
+        fs.writeFileSync(QUEUE_FILE, ''); // clear queue so it isn't re-processed
         await processJob(job);
         processing = false;
       }
     } catch (err) {
       if (err.name !== 'SyntaxError') {
-        console.error('Tesco Queue error:', err);
+        log(`ERROR: Queue error: ${err.message}`);
       }
       processing = false;
     }
@@ -547,3 +538,4 @@ async function watchQueue() {
 }
 
 watchQueue();
+

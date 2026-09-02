@@ -17,9 +17,9 @@ export default function ChefSelector() {
   };
 
   return (
-    <div className="p-4 border-b border-white/40 dark:border-slate-800 bg-indigo-50/50 dark:bg-indigo-900/20">
-      <h2 className="text-sm font-black text-indigo-900 dark:text-indigo-100 flex items-center gap-2 mb-3 uppercase tracking-wider">
-        <Users className="w-4 h-4 text-indigo-500" /> Chefs <span className="text-[10px] lowercase font-normal text-indigo-600">(Dinners)</span>
+    <div className="p-4 border-b border-white/40 dark:border-slate-800 bg-[#5AA9E6]/20 dark:bg-[#5AA9E6]/20">
+      <h2 className="text-sm font-black text-[#5AA9E6] dark:text-[#7FC8F8] flex items-center gap-2 mb-3 uppercase tracking-wider">
+        <Users className="w-4 h-4 text-[#5AA9E6]" /> Chefs <span className="text-[10px] lowercase font-normal text-slate-500">(Dinners)</span>
       </h2>
       <div className="flex flex-wrap gap-2 mb-3">
         {data?.chefs?.map(chef => (
@@ -27,8 +27,8 @@ export default function ChefSelector() {
             key={chef}
             id={`chef-${chef}`}
             type="chef"
-            data={{ id: chef }}
-            className="bg-white dark:bg-slate-800 px-2 py-1.5 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 shadow-sm border-2 border-indigo-100 dark:border-slate-700 cursor-grab active:cursor-grabbing hover:border-indigo-400 hover:shadow-md transition-all flex items-center gap-1.5 group"
+            data={{ id: chef, name: chef }}
+            className="bg-white dark:bg-slate-800 px-2 py-1.5 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 shadow-sm border-2 border-[#7FC8F8]/50 dark:border-slate-700 cursor-grab active:cursor-grabbing hover:border-[#5AA9E6] hover:shadow-md transition-all flex items-center gap-1.5 group"
           >
             <span className="text-sm shrink-0">{getChefAnimal(chef)}</span>
             <span className="pl-0.5">{chef}</span>
@@ -49,13 +49,13 @@ export default function ChefSelector() {
           placeholder="New chef..." 
           value={newChefName} 
           onChange={e => setNewChefName(e.target.value)} 
-          className="flex-1 bg-white dark:bg-slate-800 text-xs font-bold rounded-xl px-3 py-1.5 border border-indigo-200 dark:border-slate-600 focus:outline-none focus:border-indigo-500"
+          className="flex-1 bg-white dark:bg-slate-800 text-xs font-bold rounded-xl px-3 py-1.5 border border-[#7FC8F8]/50 dark:border-slate-600 focus:outline-none focus:border-[#5AA9E6]"
           onKeyDown={(e) => e.key === 'Enter' && handleAddChef()}
         />
         <button 
           onClick={handleAddChef}
           disabled={!newChefName.trim()}
-          className="bg-indigo-500 hover:bg-indigo-600 text-white p-1.5 rounded-xl disabled:opacity-50 transition-colors shadow-sm"
+          className="bg-[#5AA9E6] hover:bg-[#5AA9E6]/80 text-white p-1.5 rounded-xl disabled:opacity-50 transition-colors shadow-sm"
         >
           <Plus className="w-4 h-4" />
         </button>

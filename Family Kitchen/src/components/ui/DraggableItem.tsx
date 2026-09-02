@@ -23,8 +23,10 @@ export function DraggableItem({
   });
 
   const style = {
-    transform: CSS.Translate.toString(transform),
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isDragging ? 0.3 : 1,
+    scale: isDragging ? '0.95' : '1',
+    transition: 'opacity 250ms ease, scale 250ms ease',
+    zIndex: isDragging ? 50 : 1,
   };
 
   return (

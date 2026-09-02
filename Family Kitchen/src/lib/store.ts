@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useContext, createContext } from 'react';
 import { supabase } from './supabase';
+import { defaultRecipes, defaultBundles } from './knowledgeBase';
 
 export interface Ingredient {
   id: string;
@@ -15,6 +16,7 @@ export interface Recipe {
   id: string;
   name: string;
   ingredients: Ingredient[];
+  isFavorite?: boolean;
 }
 
 export interface DinnerSlot {
@@ -48,29 +50,7 @@ export interface AppData {
   chefs: string[];
 }
 
-const calc = (qty: number) => ({
-  quantity: qty,
-  adultQty: Math.round((qty / 3) * 10) / 10,
-  childQty: Math.round(((qty / 3) * 0.5) * 10) / 10
-});
 
-const defaultRecipes: Recipe[] = [
-  { id: '1', name: 'Spaghetti Bolognese', ingredients: [{ id: 'i1', name: 'Minced Beef', ...calc(500), unit: 'g' }, { id: 'i2', name: 'Spaghetti', ...calc(400), unit: 'g' }, { id: 'i3', name: 'Pasta Sauce', ...calc(1), unit: 'jar' }, { id: 'i4', name: 'Onion', ...calc(1), unit: 'whole' }, { id: 'i5', name: 'Mushrooms', ...calc(200), unit: 'g' }] },
-  { id: '2', name: 'Chicken Fajitas', ingredients: [{ id: 'i6', name: 'Chicken Breast', ...calc(500), unit: 'g' }, { id: 'i7', name: 'Fajita Kit', ...calc(1), unit: 'pack' }, { id: 'i8', name: 'Peppers', ...calc(2), unit: 'whole' }, { id: 'i9', name: 'Onion', ...calc(1), unit: 'whole' }, { id: 'i10', name: 'Sour Cream', ...calc(1), unit: 'tub' }] },
-  { id: '3', name: 'Sausage and Mash', ingredients: [{ id: 'i11', name: 'Pork Sausages', ...calc(8), unit: 'pack' }, { id: 'i12', name: 'Potatoes', ...calc(1000), unit: 'g' }, { id: 'i13', name: 'Gravy Granules', ...calc(1), unit: 'tub' }, { id: 'i14', name: 'Peas', ...calc(300), unit: 'g' }] },
-  { id: '4', name: 'Fish Pie', ingredients: [{ id: 'i15', name: 'Fish Pie Mix', ...calc(400), unit: 'g' }, { id: 'i16', name: 'Potatoes', ...calc(800), unit: 'g' }, { id: 'i17', name: 'Milk', ...calc(500), unit: 'ml' }, { id: 'i18', name: 'Butter', ...calc(50), unit: 'g' }, { id: 'i19', name: 'Cheddar Cheese', ...calc(100), unit: 'g' }] },
-  { id: '5', name: 'Vegetable Stir Fry', ingredients: [{ id: 'i20', name: 'Stir Fry Veg', ...calc(1), unit: 'pack' }, { id: 'i21', name: 'Egg Noodles', ...calc(2), unit: 'pack' }, { id: 'i22', name: 'Soy Sauce', ...calc(1), unit: 'bottle' }, { id: 'i23', name: 'Tofu', ...calc(1), unit: 'pack' }, { id: 'i24', name: 'Sweet Chilli Sauce', ...calc(1), unit: 'bottle' }] },
-  { id: '6', name: 'Macaroni Cheese', ingredients: [{ id: 'i25', name: 'Macaroni', ...calc(400), unit: 'g' }, { id: 'i26', name: 'Cheddar Cheese', ...calc(300), unit: 'g' }, { id: 'i27', name: 'Milk', ...calc(500), unit: 'ml' }, { id: 'i28', name: 'Butter', ...calc(50), unit: 'g' }, { id: 'i29', name: 'Flour', ...calc(50), unit: 'g' }] },
-  { id: '7', name: 'Cottage Pie', ingredients: [{ id: 'i30', name: 'Minced Beef', ...calc(500), unit: 'g' }, { id: 'i31', name: 'Potatoes', ...calc(1000), unit: 'g' }, { id: 'i32', name: 'Carrots', ...calc(2), unit: 'whole' }, { id: 'i33', name: 'Beef Stock', ...calc(1), unit: 'cube' }] },
-  { id: '8', name: 'Chicken Curry', ingredients: [{ id: 'i34', name: 'Chicken Breast', ...calc(500), unit: 'g' }, { id: 'i35', name: 'Curry Sauce', ...calc(1), unit: 'jar' }, { id: 'i36', name: 'Basmati Rice', ...calc(300), unit: 'g' }, { id: 'i37', name: 'Naan Bread', ...calc(2), unit: 'pack' }] },
-  { id: '9', name: 'Tuna Pasta Bake', ingredients: [{ id: 'i38', name: 'Penne Pasta', ...calc(400), unit: 'g' }, { id: 'i39', name: 'Tinned Tuna', ...calc(2), unit: 'tins' }, { id: 'i40', name: 'Pasta Bake Sauce', ...calc(1), unit: 'jar' }, { id: 'i41', name: 'Cheddar Cheese', ...calc(150), unit: 'g' }] },
-  { id: '10', name: 'Beef Burgers', ingredients: [{ id: 'i42', name: 'Beef Burgers', ...calc(4), unit: 'pack' }, { id: 'i43', name: 'Burger Buns', ...calc(4), unit: 'pack' }, { id: 'i44', name: 'Lettuce', ...calc(1), unit: 'head' }, { id: 'i45', name: 'Tomato', ...calc(2), unit: 'whole' }] },
-];
-
-const defaultBundles: Recipe[] = [
-  { id: 'b1', name: 'Standard Kids Lunchbox', ingredients: [{ id: 'bi1', name: 'Ham', quantity: 1, unit: 'pack' }, { id: 'bi2', name: 'Bread', quantity: 1, unit: 'loaf' }, { id: 'bi3', name: 'Apples', quantity: 5, unit: 'whole' }, { id: 'bi4', name: 'Yogurt Tubes', quantity: 1, unit: 'pack' }] },
-  { id: 'b2', name: 'Weekend Fry Up', ingredients: [{ id: 'bi5', name: 'Eggs', quantity: 6, unit: 'whole' }, { id: 'bi6', name: 'Bacon', quantity: 1, unit: 'pack' }, { id: 'bi7', name: 'Baked Beans', quantity: 1, unit: 'tin' }] },
-];
 
 function getNextWeekPlannerDays(): PlannerDay[] {
   const days: PlannerDay[] = [];
@@ -181,8 +161,24 @@ export function buildStore() {
         if (!finalData.planner) finalData.planner = { days: [], weeklyBreakfast: [], weeklyLunch: [], weeklySnacks: [] };
         if (!finalData.planner.days || finalData.planner.days.length === 0) {
           finalData.planner.days = getNextWeekPlannerDays();
-          supabase.from('family_state').upsert({ id: 'primary', data: finalData, updated_at: new Date().toISOString() }).then();
         }
+        
+        // Ensure all default recipes exist in the library
+        const existingNames = new Set((finalData.recipes || []).map((r: any) => r.name.toLowerCase()));
+        const missingDefaults = defaultRecipes.filter(r => !existingNames.has(r.name.toLowerCase()));
+        if (missingDefaults.length > 0) {
+          finalData.recipes = [...(finalData.recipes || []), ...missingDefaults];
+        }
+
+        // Ensure all default bundles exist in the library
+        const existingBundleNames = new Set((finalData.bundles || []).map((b: any) => b.name.toLowerCase()));
+        const missingBundleDefaults = defaultBundles.filter(b => !existingBundleNames.has(b.name.toLowerCase()));
+        if (missingBundleDefaults.length > 0) {
+          finalData.bundles = [...(finalData.bundles || []), ...missingBundleDefaults];
+        }
+
+        supabase.from('family_state').upsert({ id: 'primary', data: finalData, updated_at: new Date().toISOString() }).then();
+
         setData(finalData);
         localStorage.setItem('recipeAppDataV6', JSON.stringify(finalData));
       } else {
@@ -236,6 +232,12 @@ export function buildStore() {
   const updateRecipe = (updatedRecipe: Recipe) => {
     if (!data) return;
     const newRecipes = data.recipes.map(r => r.id === updatedRecipe.id ? updatedRecipe : r);
+    saveData({ ...data, recipes: newRecipes });
+  };
+
+  const toggleFavoriteRecipe = (recipeId: string) => {
+    if (!data) return;
+    const newRecipes = data.recipes.map(r => r.id === recipeId ? { ...r, isFavorite: !r.isFavorite } : r);
     saveData({ ...data, recipes: newRecipes });
   };
 
@@ -541,7 +543,7 @@ export function buildStore() {
 
   return {
     data,
-    addRecipe, updateRecipe, deleteRecipe,
+    addRecipe, updateRecipe, deleteRecipe, toggleFavoriteRecipe,
     addBundle, updateBundle, deleteBundle,
     updateDinnerSlot, updateDinnerChef, updateDinnerGuests,
     moveDinnerSlot, moveDinnerChef, moveWeeklyItem,
