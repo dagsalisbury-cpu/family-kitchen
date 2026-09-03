@@ -426,7 +426,8 @@ export default function Dashboard() {
   const onDragStart = (event: DragStartEvent) => {
     if (event.active?.data?.current) {
       setActiveDragItem({ id: event.active.id as string, type: event.active.data.current.type, data: event.active.data.current });
-      setIsMobileLibraryOpen(false);
+      // Delay retraction slightly to ensure drag overlay fully detaches before CSS animation kicks in
+      setTimeout(() => setIsMobileLibraryOpen(false), 50);
     }
   };
 
@@ -524,9 +525,10 @@ export default function Dashboard() {
         
         {/* LEFT SIDEBAR */}
         {/* Mobile overlay background */}
-        {isMobileLibraryOpen && (
-          <div className="lg:hidden fixed inset-0 bg-black/20 z-40" onClick={() => setIsMobileLibraryOpen(false)} />
-        )}
+        <div 
+          className={`lg:hidden fixed inset-0 bg-black/20 z-40 transition-opacity duration-300 ${isMobileLibraryOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} 
+          onClick={() => setIsMobileLibraryOpen(false)} 
+        />
         <div className={`absolute lg:relative left-0 top-0 bottom-0 z-50 lg:z-10 w-[300px] flex-shrink-0 border-r-4 border-slate-200/50 dark:border-slate-800/50 bg-white/60 dark:bg-slate-900/40 backdrop-blur-md flex flex-col h-full overflow-visible shadow-[5px_0_15px_-3px_rgba(0,0,0,0.05)] transition-transform duration-300 ${isMobileLibraryOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
 
           {/* Mobile Drawer Tab */}
