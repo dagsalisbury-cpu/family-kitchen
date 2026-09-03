@@ -58,7 +58,7 @@ export default function RecipesPage() {
                     src={`/images/recipes/${recipe.name.toLowerCase().replace(/ /g, '-')}.jpg`} 
                     alt={recipe.name} 
                     onError={(e) => { e.currentTarget.src = '/images/recipes/generic-meal.svg' }}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover scale-[1.35] group-hover:scale-[1.45] transition-transform duration-500 origin-center"
                   />
                   {recipe.isFavorite && (
                     <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-1.5 rounded-full shadow-sm text-amber-500">

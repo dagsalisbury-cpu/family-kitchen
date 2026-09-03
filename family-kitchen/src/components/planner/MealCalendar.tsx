@@ -41,7 +41,7 @@ export default function MealCalendar({
               </div>
             </div>
             
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-4 lg:gap-3">
               <div className="flex flex-col gap-1">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Delivery Date</label>
                 <select 
