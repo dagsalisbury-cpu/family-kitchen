@@ -89,7 +89,7 @@ export default function MealCalendar({
             </div>
           </div>
 
-          <div className="border-t border-slate-150/50 dark:border-slate-800/50 pt-3 flex items-center justify-between">
+          <div className="border-t border-slate-150/50 dark:border-slate-800/50 pt-3 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 lg:gap-0">
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-slate-600 dark:text-slate-350">Calendar Range:</span>
               <span className="bg-[#F9F9F9] dark:bg-slate-800/30 text-slate-600 dark:text-slate-400 text-xs font-black px-2 py-0.5 rounded-md">
@@ -97,7 +97,7 @@ export default function MealCalendar({
               </span>
             </div>
             
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 flex-wrap">
               {[7, 8, 9, 10, 11, 12, 13, 14].map((num) => (
                 <button
                   key={num}

@@ -11,8 +11,9 @@ export default function WanderingAvatar() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Initial placement in the center
-    setPos({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+    // Initial placement in the center (or bottom line on mobile)
+    const initIsMobile = window.innerWidth < 1024;
+    setPos({ x: window.innerWidth / 2, y: initIsMobile ? window.innerHeight - 80 : window.innerHeight / 2 });
 
     let timeoutId: NodeJS.Timeout;
 
@@ -22,10 +23,14 @@ export default function WanderingAvatar() {
       setAction(nextAction);
       setSpeech(null);
 
-      if (nextAction === 'walking') {
-        // Walk to a random spot
-        const nextX = Math.max(50, Math.floor(Math.random() * (window.innerWidth - 100)));
-        const nextY = Math.max(50, Math.floor(Math.random() * (window.innerHeight - 100)));
+      const isMobile = window.innerWidth < 1024;
+
+      if (nextAction === 'walking' || (nextAction === 'inspecting' && isMobile)) {
+        // Walk to a random spot (constrained to bottom line on mobile)
+        const nextX = Math.max(20, Math.floor(Math.random() * (window.innerWidth - 80)));
+        const nextY = isMobile 
+          ? window.innerHeight - 100 
+          : Math.max(50, Math.floor(Math.random() * (window.innerHeight - 100)));
         
         setPos(prev => {
           setFacingLeft(nextX < prev.x);
