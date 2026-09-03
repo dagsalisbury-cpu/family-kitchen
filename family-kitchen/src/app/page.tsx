@@ -426,8 +426,12 @@ export default function Dashboard() {
   const onDragStart = (event: DragStartEvent) => {
     if (event.active?.data?.current) {
       setActiveDragItem({ id: event.active.id as string, type: event.active.data.current.type, data: event.active.data.current });
-      // Delay retraction slightly to ensure drag overlay fully detaches before CSS animation kicks in
-      setTimeout(() => setIsMobileLibraryOpen(false), 50);
+    }
+  };
+
+  const onDragMove = (event: any) => {
+    if (isMobileLibraryOpen && event.delta.x > 30) {
+      setIsMobileLibraryOpen(false);
     }
   };
 
@@ -511,7 +515,7 @@ export default function Dashboard() {
   );
 
   return (
-    <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+    <DndContext onDragStart={onDragStart} onDragMove={onDragMove} onDragEnd={onDragEnd}>
     <div 
       className="flex-1 bg-gradient-to-br from-[#7FC8F8]/40 via-[#F9F9F9] to-[#5AA9E6]/20 dark:from-[#5AA9E6]/20 dark:to-slate-900 font-sans flex flex-col overflow-hidden text-slate-800"
     >
