@@ -527,10 +527,18 @@ export default function Dashboard() {
         {isMobileLibraryOpen && (
           <div className="lg:hidden fixed inset-0 bg-black/20 z-40" onClick={() => setIsMobileLibraryOpen(false)} />
         )}
-        <div className={`absolute lg:relative left-0 top-0 bottom-0 z-50 lg:z-10 w-[300px] flex-shrink-0 border-r-4 border-slate-200/50 dark:border-slate-800/50 bg-white/60 dark:bg-slate-900/40 backdrop-blur-md flex flex-col h-full overflow-hidden shadow-[5px_0_15px_-3px_rgba(0,0,0,0.05)] transition-transform duration-300 ${isMobileLibraryOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        <div className={`absolute lg:relative left-0 top-0 bottom-0 z-50 lg:z-10 w-[300px] flex-shrink-0 border-r-4 border-slate-200/50 dark:border-slate-800/50 bg-white/60 dark:bg-slate-900/40 backdrop-blur-md flex flex-col h-full overflow-visible shadow-[5px_0_15px_-3px_rgba(0,0,0,0.05)] transition-transform duration-300 ${isMobileLibraryOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+
+          {/* Mobile Drawer Tab */}
+          <button 
+            onClick={() => setIsMobileLibraryOpen(!isMobileLibraryOpen)}
+            className="lg:hidden absolute top-1/2 -right-8 -translate-y-1/2 w-8 h-20 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-y-2 border-r-2 border-slate-200/50 dark:border-slate-700 rounded-r-xl flex items-center justify-center shadow-[4px_0_10px_rgba(0,0,0,0.1)] hover:bg-slate-50 transition-colors z-[60]"
+          >
+            <div className={`w-1.5 h-8 bg-slate-300 dark:bg-slate-600 rounded-full transition-transform duration-300 ${isMobileLibraryOpen ? 'scale-y-75' : ''}`} />
+          </button>
 
           <ChefSelector />
-          <div className="flex-1 overflow-y-auto flex flex-col">
+          <div className="flex-1 overflow-y-auto flex flex-col overflow-x-hidden">
             <BundleLibrary openNewModal={openNewModal} openEditModal={openEditModal} />
             <RecipeLibrary openNewModal={openNewModal} openEditModal={openEditModal} />
           </div>
