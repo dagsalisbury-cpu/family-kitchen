@@ -26,7 +26,7 @@ export default function MealCalendar({
     <div className={`flex-1 flex flex-col overflow-auto relative ${className || ""}`}>
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 pointer-events-none mix-blend-overlay"></div>
       
-      <div className="p-4 w-full h-full flex flex-col relative z-10 min-w-[800px] gap-6">
+      <div className="p-4 w-full h-full flex flex-col relative z-10 lg:min-w-[800px] min-w-0 gap-6">
         
         {/* DELIVERY SCHEDULE & TIME SLOT SETTINGS */}
         <div className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-md rounded-[2rem] p-6 shadow-sm border border-white/50 dark:border-slate-700 flex flex-col gap-4">
@@ -122,7 +122,7 @@ export default function MealCalendar({
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full ml-2">Drag Item Bundles here</span>
           </h2>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {(['breakfast', 'lunch', 'snacks'] as const).map(type => {
               const configs = {
                 breakfast: { icon: Coffee, color: 'text-[#FFE45E]', bg: 'bg-[#FFE45E]/20', border: 'border-[#FFE45E]/50' },
@@ -187,7 +187,7 @@ export default function MealCalendar({
             </p>
           </div>
 
-          <div className="grid grid-cols-7 gap-3">
+          <div className="grid grid-cols-1 lg:grid-cols-7 gap-3">
             {data.planner.days.map((day) => {
               const slot = day.dinner;
               const recipe = slot.recipeId ? data.recipes.find(r => r.id === slot.recipeId) : null;
